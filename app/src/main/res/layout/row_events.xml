@@ -6,25 +6,34 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="10dp">
-    <CheckBox
-        android:id="@+id/cb_item_is_done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
     <TextView
-        android:id="@+id/tv_item_text"
+        android:id="@+id/tv_event_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:layout_centerVertical="true"
+        android:text="@string/date_ex"
+         />
+
+    <TextView
+        android:id="@+id/tv_event_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/cb_item_is_done"
-        android:layout_toRightOf="@+id/cb_item_is_done"
+        android:layout_marginStart="@dimen/marginItems"
+        android:layout_marginLeft="@dimen/marginItems"
+        android:layout_toEndOf="@+id/tv_event_date"
+        android:layout_toRightOf="@+id/tv_event_date"
         android:text="@string/item_text"
         android:textColor="#000000"
         android:textSize="20sp" />
+
     <ImageButton
-        android:id="@+id/iv_cross"
+        android:id="@+id/iv_cross_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tv_item_text"
+        android:layout_alignBottom="@+id/tv_event_text"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

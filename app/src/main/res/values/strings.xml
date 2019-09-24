@@ -4,4 +4,44 @@
     <string name="item_text">Item Text</string>
     <string name="deletebutton">DeleteButton</string>
     <string name="sign_out">Sign Out</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">ToDoFire</string>
+    <string name="nav_header_subtitle">by Carlos Iniesta</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+    <string name="todolist">ToDo List</string>
+    <string name="eventlist">Events List</string>
+    <string name="others">otros</string>
+    <string name="signOut">Cerrar Sesión</string>
+    <string name="about">About</string>
+    <string name="todo_list">ToDo List:</string>
+    <string name="date_ex">24/09/2019</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Configuracion</string>
+    <string name="sync_header">Ajustes</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Tu Nombre</string>
+    <string name="reply_title">Aceptar permisos por defecto</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Enviar correos Periodicamente</string>
+    <string name="attachment_title"> Descargar automaticamente archivos</string>
+    <string name="attachment_summary_on">Descargar automaticamente archivos
+    </string>
+    <string name="attachment_summary_off">Pedir permiso antes de descargar archivos</string>
+    <string name="config">Configuración</string>
 </resources>
