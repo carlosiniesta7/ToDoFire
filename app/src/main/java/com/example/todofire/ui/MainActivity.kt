@@ -10,10 +10,9 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.todofire.R
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
-import com.example.todofire.R
-import com.example.todofire.ui.ToDo.ToDoFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -24,14 +23,16 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.toolbar
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val RC_SIGN_IN : Int = 1
+    private val rcSignIn : Int = 1
     private lateinit var fireAuth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mGoogleSignInOptions: GoogleSignInOptions
+    private lateinit var itIn: MenuItem
+    private lateinit var itOut: MenuItem
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +40,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         initializeUi()
         initMenu()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initSignItemNav()
+        checkUser()
     }
 
     //---------------------INIT FUNCTIONS---------------------------\\
@@ -55,6 +62,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun initSignItemNav() {
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        val navMenu = navigationView.menu
+        itIn = navMenu.findItem(R.id.nav_signIn)
+        itOut = navMenu.findItem(R.id.nav_signOut)
+    }
+
     private fun initMenu() {
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
@@ -65,17 +79,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val user = FirebaseAuth.getInstance().currentUser
-        if(user!=null){
-            changeVisibility(true)
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        checkUser()
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -94,10 +105,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_eventList -> {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.eventFragment)
-                //val action = MainFragmentDirections.actionlistFragmentToeventFragment
             }
             R.id.nav_signOut -> {
                 signOut()
+            }
+            R.id.nav_signIn -> {
+                signIn()
             }
             R.id.nav_about -> {
                 Toast.makeText(this, "Navegar Activity About", Toast.LENGTH_SHORT).show()
@@ -118,12 +131,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(signInIntent, rcSignIn)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == rcSignIn) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
@@ -140,9 +153,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         fireAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-               // startActivity(HomeActivity.getLaunchIntent(this))
                 changeVisibility(true)
-                Toast.makeText(this, "Google sign in succesfull! :D" + it.result, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(this, "Google sign in failed :(", Toast.LENGTH_LONG).show()
             }
@@ -150,10 +161,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun signOut() {
-        //startActivity(SignInActivity.getLaunchIntent(this))
-        changeVisibility(false)
         FirebaseAuth.getInstance().signOut()
-        //Toast.makeText(this, "Sign Out correct. Bye! ;)", Toast.LENGTH_LONG).show()
+        changeVisibility(false)
+        Toast.makeText(this, "See u soon! ;)", Toast.LENGTH_LONG).show()
     }
 
     //--------------------------OTHERS FUNCTIONS--------------------------\\
@@ -161,10 +171,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun changeVisibility(flag: Boolean) {
         if (flag) {
             sign_in_button.visibility = GONE
+            itIn.isVisible = false
             sign_out_button.visibility = VISIBLE
+            itOut.isVisible = true
         } else {
             sign_in_button.visibility = VISIBLE
+            itIn.isVisible = true
             sign_out_button.visibility = GONE
+            itOut.isVisible = false
+        }
+    }
+
+    private fun checkUser() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            changeVisibility(true)
+        }
+        else {
+            changeVisibility(false)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 }

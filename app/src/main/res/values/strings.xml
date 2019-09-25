@@ -44,4 +44,5 @@
     </string>
     <string name="attachment_summary_off">Pedir permiso antes de descargar archivos</string>
     <string name="config">Configuración</string>
+    <string name="singIn">Iniciar sesión</string>
 </resources>
